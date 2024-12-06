@@ -1,14 +1,15 @@
-import { useFonts } from 'expo-font';
+import { useEffect } from 'react';
+import { Image } from 'react-native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
 import 'react-native-reanimated';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    NunitoSans: require('../assets/fonts/NunitoSans.ttf'),
   });
 
   useEffect(() => {
@@ -23,11 +24,15 @@ export default function RootLayout() {
 
   return (
     <Stack
-      screenOptions={ {
-        headerShown: false,
-      } }
+      screenOptions={{
+        headerShown: true,
+        headerTitle: () => (
+          <Image source={require('../assets/logo.png')} style={{ width: 80, height: 30, objectFit: 'contain' }} />
+        ),
+      }}
     >
-      <Stack.Screen name="index" options={ { headerShown: false } } />
+      <Stack.Screen name="index" options={{ headerShown: true }} />
+      <Stack.Screen name="photo" options={{ headerShown: false }} />
     </Stack>
   );
 }
