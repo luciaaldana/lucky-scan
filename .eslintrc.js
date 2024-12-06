@@ -8,13 +8,11 @@ module.exports = {
     curly: ['error', 'all'],
     semi: ['error', 'always'],
     quotes: ['error', 'single', { avoidEscape: true }],
-    'comma-dangle': ['error', 'always-multiline'],
     'object-curly-spacing': ['error', 'always'],
     'array-bracket-spacing': ['error', 'never'],
     indent: ['error', 2],
     'react/jsx-boolean-value': ['error', 'never'],
     'react/self-closing-comp': 'warn',
-    'react/jsx-curly-spacing': ['error', { when: 'always', children: true }],
     'react/jsx-indent': ['error', 2],
   },
 };
