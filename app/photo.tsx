@@ -1,13 +1,11 @@
 import Camera from '@/components/Camera';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Photo() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#e0f3e8' }}>
-      <View style={styles.container}>
-        <Camera />
-      </View>
+      <Camera />
     </SafeAreaView>
   );
 }

@@ -13,7 +13,6 @@ export default function Home() {
           <Text style={globalStyles.appName}>LuckyScan</Text>, simplemente toma una foto de tu boleta y nuestra
           aplicación se encargará del resto.
         </Text>
-
         <Link href="/photo" style={[globalStyles.button, styles.button]} onPress={() => {}}>
           <Text style={globalStyles.label}>Tomar foto de mi boleta</Text>
         </Link>

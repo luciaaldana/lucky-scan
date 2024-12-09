@@ -23,6 +23,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 16,
     marginBottom: 8,
+    flexWrap: 'wrap',
   },
   label: {
     color: '#020202',
