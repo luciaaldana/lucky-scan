@@ -1,30 +1,15 @@
 import { useRef } from 'react';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { Dimensions, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import globalStyles from '../styles/global';
 import { useProcessPhoto } from '@/hooks/useProcessPhoto';
-import Spinner from './Spinner';
+import { useRenderState } from '@/hooks/useRenderState';
 import { Link } from 'expo-router';
 
 export default function Camera({ lotteryTicket, setLotteryTicket }: any) {
   const [permission, requestPermission] = useCameraPermissions();
   const { processPhoto, loading, error, setError } = useProcessPhoto(setLotteryTicket);
   const cameraRef = useRef<CameraView>(null);
-
-  if (!permission) {
-    return <View />;
-  }
-
-  if (!permission.granted) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>Necesitamos tu permiso para usar la cámara</Text>
-        <TouchableOpacity style={globalStyles.button} onPress={requestPermission}>
-          <Text style={globalStyles.label}>Conceder permiso</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
 
   const takePicture = async () => {
     if (!cameraRef.current) {
@@ -42,16 +27,12 @@ export default function Camera({ lotteryTicket, setLotteryTicket }: any) {
     }
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  const handleResetLotteryTicket = () => {
+    setError(null);
+  };
 
-  if (error) {
-    const handleResetLotteryTicket = () => {
-      setError(null);
-    };
-
-    return (
+  const content = useRenderState(loading, error, lotteryTicket, {
+    error: (
       <View style={styles.container}>
         <Text style={globalStyles.text}>{error}</Text>
         <View style={styles.wrapperBtn}>
@@ -64,38 +45,54 @@ export default function Camera({ lotteryTicket, setLotteryTicket }: any) {
           >
             <Text style={globalStyles.label}>Inicio</Text>
           </Link>
-          <Pressable style={[globalStyles.button, styles.button]} onPress={handleResetLotteryTicket}>
+          <TouchableOpacity style={[globalStyles.button, styles.button]} onPress={handleResetLotteryTicket}>
             <Text style={globalStyles.label}>Reintentar</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
+      </View>
+    ),
+    success: (
+      <View style={[globalStyles.container, { paddingTop: 0 }]}>
+        <View style={styles.containerSteps}>
+          <Text style={globalStyles.text}>
+            Controla la fecha de tu boleta y que corresponda a la fecha de sorteo. Quini6 sortea cada Miércoles y
+            Domingo a las 21 horas.
+          </Text>
+          <View style={styles.stepTwo}>
+            <Image source={require('../assets/guide.png')} style={styles.image} />
+            <Text style={[globalStyles.text, { flex: 1 }]}>
+              Usa la cámara horizontal para enfocar la fila de números de tu boleta.
+            </Text>
+          </View>
+        </View>
+        <View style={[globalStyles.container, { padding: 0 }]}>
+          <View style={styles.containerCamera}>
+            <CameraView style={styles.camera} facing={'back'} ref={cameraRef} autofocus="on" />
+          </View>
+          <TouchableOpacity style={globalStyles.button} onPress={takePicture}>
+            <Text style={globalStyles.label}>Tomar foto</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    ),
+  });
+
+  if (!permission) {
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>Necesitamos tu permiso para usar la cámara</Text>
+        <TouchableOpacity style={globalStyles.button} onPress={requestPermission}>
+          <Text style={globalStyles.label}>Conceder permiso</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  return (
-    <View style={[globalStyles.container, { paddingTop: 0 }]}>
-      <View style={styles.containerSteps}>
-        <Text style={globalStyles.text}>
-          Controla la fecha de tu boleta y que corresponda a la fecha de sorteo. Quini6 sortea cada Miércoles y Domingo
-          a las 21 horas.
-        </Text>
-        <View style={styles.stepTwo}>
-          <Image source={require('../assets/guide.png')} style={styles.image} />
-          <Text style={[globalStyles.text, { flex: 1 }]}>
-            Usa la cámara horizontal para enfocar la fila de números de tu boleta.
-          </Text>
-        </View>
-      </View>
-      <View style={[globalStyles.container, { padding: 0 }]}>
-        <View style={styles.containerCamera}>
-          <CameraView style={styles.camera} facing={'back'} ref={cameraRef} autofocus="on" />
-        </View>
-        <TouchableOpacity style={globalStyles.button} onPress={takePicture}>
-          <Text style={globalStyles.label}>Tomar foto</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  return content;
 }
 
 const styles = StyleSheet.create({
@@ -123,11 +120,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  halfImg: {
-    width: 300,
-    objectFit: 'fill',
-    flex: 1,
-  },
   camera: {
     height: 250,
     width: 300,
@@ -138,12 +130,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width * 0.4,
     objectFit: 'contain',
     marginRight: 16,
-  },
-
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
   },
   wrapperBtn: {
     width: '100%',
