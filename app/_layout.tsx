@@ -53,6 +53,24 @@ export default function RootLayout() {
           },
         }}
       />
+      <Stack.Screen
+        name="results"
+        options={{
+          headerShown: true,
+          headerLeft: () => {
+            const handleDismiss = () => {
+              if (router.canDismiss()) {
+                router.dismiss(1);
+              }
+            };
+            return (
+              <Pressable onPress={handleDismiss}>
+                <Entypo name="chevron-left" size={24} color="#4dba7a" />
+              </Pressable>
+            );
+          },
+        }}
+      />
     </Stack>
   );
 }

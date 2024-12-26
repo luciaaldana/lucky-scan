@@ -40,4 +40,12 @@ export default StyleSheet.create({
     borderColor: '#020202',
     borderWidth: 2,
   },
+  buttonSecondary: {
+    backgroundColor: 'transparent',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderColor: '#020202',
+    borderWidth: 2,
+  },
 });

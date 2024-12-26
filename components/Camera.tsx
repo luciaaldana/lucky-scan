@@ -1,14 +1,15 @@
+import { useRef } from 'react';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useRef, useState } from 'react';
-import { Button, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as ImageManipulator from 'expo-image-manipulator';
+import { Dimensions, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import globalStyles from '../styles/global';
+import { useProcessPhoto } from '@/hooks/useProcessPhoto';
+import Spinner from './Spinner';
+import { Link } from 'expo-router';
 
-export default function Camera() {
+export default function Camera({ lotteryTicket, setLotteryTicket }: any) {
   const [permission, requestPermission] = useCameraPermissions();
-  const [ticketNumbers, setTicketNumbers] = useState<number[]>([]);
+  const { processPhoto, loading, error, setError } = useProcessPhoto(setLotteryTicket);
   const cameraRef = useRef<CameraView>(null);
-  const urlBase = process.env.EXPO_PUBLIC_API_URL;
 
   if (!permission) {
     return <View />;
@@ -17,66 +18,59 @@ export default function Camera() {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text style={styles.message}>Necesitamos tu permiso para usar la cámara</Text>
+        <TouchableOpacity style={globalStyles.button} onPress={requestPermission}>
+          <Text style={globalStyles.label}>Conceder permiso</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  //TODO: MANEJAR ERRORES: CUANDO NO HAY NUMEROS ENCONTRADOS.
-  // TODO: CONFIRMAR QUE LOS NÚMEROS SON CORRECTOS.
-  //TODO: SUBIR IMAGEN
-
-  const __takePicture = async () => {
-    if (!cameraRef) {
+  const takePicture = async () => {
+    if (!cameraRef.current) {
       return;
     }
+
     try {
-      const photo = await cameraRef.current?.takePictureAsync({ base64: true, quality: 1 });
+      const photo = await cameraRef.current.takePictureAsync({ base64: true, quality: 1 });
 
       if (photo?.uri) {
-        const manipulatedPhoto = await ImageManipulator.manipulateAsync(photo.uri, [{ resize: { width: 2600 } }], {
-          base64: true,
-          compress: 1,
-          format: ImageManipulator.SaveFormat.JPEG,
-        });
-
-        const formData = new FormData();
-        formData.append('image', {
-          uri: manipulatedPhoto.uri,
-          type: 'image/jpeg',
-          name: 'photo.jpg',
-        });
-
-        const response = await fetch(`${urlBase}/ocr`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        const { text } = await response.json();
-
-        const regex = /\b\d{2}( \d{2}){5}\b/g;
-        const match = text.match(regex);
-
-        const numbers = match[0].split(' ');
-
-        numbers.forEach((element: string, index: number) => {
-          numbers[index] = parseInt(element, 10);
-        });
-
-        setTicketNumbers(numbers);
-      } else {
-        console.log('No photo data found');
-        throw new Error();
+        await processPhoto(photo.uri);
       }
-    } catch (error) {
-      //TODO:
-      console.error(`${error} --`);
+    } catch (err) {
+      console.error(err);
     }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    const handleResetLotteryTicket = () => {
+      setError(null);
+    };
+
+    return (
+      <View style={styles.container}>
+        <Text style={globalStyles.text}>{error}</Text>
+        <View style={styles.wrapperBtn}>
+          <Link
+            href={{
+              pathname: '/',
+              params: { numbers: JSON.stringify(lotteryTicket.numbers) },
+            }}
+            style={[globalStyles.buttonSecondary, styles.button]}
+          >
+            <Text style={globalStyles.label}>Inicio</Text>
+          </Link>
+          <Pressable style={[globalStyles.button, styles.button]} onPress={handleResetLotteryTicket}>
+            <Text style={globalStyles.label}>Reintentar</Text>
+          </Pressable>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={[globalStyles.container, { paddingTop: 0 }]}>
@@ -94,12 +88,9 @@ export default function Camera() {
       </View>
       <View style={[globalStyles.container, { padding: 0 }]}>
         <View style={styles.containerCamera}>
-          <Image source={require('../assets/start.png')} style={styles.halfImg} />
           <CameraView style={styles.camera} facing={'back'} ref={cameraRef} autofocus="on" />
-          <Image source={require('../assets/end.png')} style={styles.halfImg} />
         </View>
-        <Text style={styles.text}>{ticketNumbers.map((number) => number + ' ')}</Text>
-        <TouchableOpacity style={globalStyles.button} onPress={__takePicture}>
+        <TouchableOpacity style={globalStyles.button} onPress={takePicture}>
           <Text style={globalStyles.label}>Tomar foto</Text>
         </TouchableOpacity>
       </View>
@@ -110,6 +101,8 @@ export default function Camera() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   containerSteps: {
     marginBottom: 16,
@@ -123,6 +116,7 @@ const styles = StyleSheet.create({
   message: {
     textAlign: 'center',
     paddingBottom: 10,
+    marginBottom: 40,
   },
   containerCamera: {
     flex: 1,
@@ -135,7 +129,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   camera: {
-    height: 50,
+    height: 250,
     width: 300,
     alignSelf: 'center',
   },
@@ -150,5 +144,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
+  },
+  wrapperBtn: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  button: {
+    marginTop: 16,
+    width: '48%',
   },
 });
