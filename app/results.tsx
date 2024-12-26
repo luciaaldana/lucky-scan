@@ -1,4 +1,3 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
 import useScrape from '@/hooks/useScrape';
 import LotteryResults from '@/components/LotteryResults';
@@ -22,5 +21,5 @@ export default function Results() {
     }
   );
 
-  return <SafeAreaView style={{ flex: 1, backgroundColor: '#e0f3e8' }}>{renderedComponent}</SafeAreaView>;
+  return renderedComponent;
 }

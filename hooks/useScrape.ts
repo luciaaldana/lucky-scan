@@ -21,7 +21,7 @@ const useScrape = () => {
   const transformData = (inputData: [string][]): TransformedData => {
     const result: TransformedData = {};
     for (let i = 0; i < inputData.length; i += 2) {
-      const key = inputData[i][0];
+      const key = inputData[i][0].replace(/\s+/g, '_');
       const values = inputData[i + 1][0].split(' - ').map((num) => parseInt(num, 10));
       result[key] = values;
     }

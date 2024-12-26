@@ -6,6 +6,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    width: '100%',
+  },
+  bg: {
+    backgroundColor: '#e0f3e8',
   },
   title: {
     fontSize: 32,
@@ -47,5 +51,17 @@ export default StyleSheet.create({
     borderRadius: 20,
     borderColor: '#020202',
     borderWidth: 2,
+  },
+  tagError: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 50,
+    backgroundColor: '#f0aaaa',
+  },
+  tagSuccess: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 50,
+    backgroundColor: '#a8debf',
   },
 });

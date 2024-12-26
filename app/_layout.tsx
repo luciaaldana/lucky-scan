@@ -34,7 +34,7 @@ export default function RootLayout() {
         ),
       }}
     >
-      <Stack.Screen name="index" options={{ headerShown: true }} />
+      <Stack.Screen name="index" options={{ headerShown: true, headerBackVisible: false }} />
       <Stack.Screen
         name="photo"
         options={{
@@ -57,18 +57,7 @@ export default function RootLayout() {
         name="results"
         options={{
           headerShown: true,
-          headerLeft: () => {
-            const handleDismiss = () => {
-              if (router.canDismiss()) {
-                router.dismiss(1);
-              }
-            };
-            return (
-              <Pressable onPress={handleDismiss}>
-                <Entypo name="chevron-left" size={24} color="#4dba7a" />
-              </Pressable>
-            );
-          },
+          headerBackVisible: false,
         }}
       />
     </Stack>

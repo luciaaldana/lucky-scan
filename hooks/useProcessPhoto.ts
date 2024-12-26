@@ -67,14 +67,16 @@ export const useProcessPhoto = (setLotteryTicket: React.Dispatch<React.SetStateA
       }
 
       const numbers = result.split(' ').map((element: string) => parseInt(element, 10));
-      if (numbers.length < 6) {
+      const filteredNumbers = numbers.filter((value) => Number.isFinite(value));
+
+      if (filteredNumbers.length < 6) {
         setError('No se encontraron suficientes números en el texto extraído');
         throw new Error('No se encontraron suficientes números en el texto extraído');
       }
 
       setLotteryTicket((prev) => ({
         ...prev,
-        numbers,
+        numbers: filteredNumbers,
       }));
     } catch (error) {
       setError('Ocurrió un error al procesar la foto, intenta nuevamente.');
