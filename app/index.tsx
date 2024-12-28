@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
+import { ROUTES } from '@/constants';
 import globalStyles from '../styles/global';
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
           <Text style={globalStyles.appName}>LuckyScan</Text>, simplemente toma una foto de tu boleta y nuestra
           aplicación se encargará del resto.
         </Text>
-        <Link href="/photo" style={[globalStyles.button, styles.button]} onPress={() => {}}>
+        <Link href={ROUTES.PHOTO} style={[globalStyles.button, styles.button]} onPress={() => {}}>
           <Text style={globalStyles.label}>Tomar foto de mi boleta</Text>
         </Link>
       </View>

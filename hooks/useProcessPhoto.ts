@@ -1,13 +1,6 @@
 import { useState } from 'react';
 import * as ImageManipulator from 'expo-image-manipulator';
-
-interface UseProcessPhotoResult {
-  processPhoto: (uri: string) => Promise<void>;
-  loading: boolean;
-  error: string | null;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setError: React.Dispatch<React.SetStateAction<string | null>>;
-}
+import { TLotteryTicket, UseProcessPhotoResult } from '@/types';
 
 const findLineBeforeDollar = (text: string) => {
   const lines = text.split('\n');
@@ -22,7 +15,9 @@ const findLineBeforeDollar = (text: string) => {
   return null;
 };
 
-export const useProcessPhoto = (setLotteryTicket: React.Dispatch<React.SetStateAction<any>>): UseProcessPhotoResult => {
+export const useProcessPhoto = (
+  setLotteryTicket: React.Dispatch<React.SetStateAction<TLotteryTicket>>
+): UseProcessPhotoResult => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const urlBase = process.env.EXPO_PUBLIC_API_URL;
@@ -43,7 +38,7 @@ export const useProcessPhoto = (setLotteryTicket: React.Dispatch<React.SetStateA
         uri: manipulatedPhoto.uri,
         type: 'image/jpeg',
         name: 'photo.jpg',
-      });
+      } as unknown as Blob);
 
       const response = await fetch(`${urlBase}/extract-text/`, {
         method: 'POST',
@@ -78,6 +73,7 @@ export const useProcessPhoto = (setLotteryTicket: React.Dispatch<React.SetStateA
         ...prev,
         numbers: filteredNumbers,
       }));
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     } catch (error) {
       setError('Ocurrió un error al procesar la foto, intenta nuevamente.');
     } finally {

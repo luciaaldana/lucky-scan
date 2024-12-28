@@ -1,13 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
-import globalStyles from '../styles/global';
 import { Link } from 'expo-router';
-
-type TLotteryResultsProps = {
-  numbers: number[];
-  data: {
-    [key: string]: number[];
-  };
-};
+import LotteryResultCard from './LotteryResultCard';
+import { ROUTES } from '@/constants';
+import { TLotteryHits, TLotteryResultsProps } from '@/types/index';
+import globalStyles from '@/styles/global';
 
 export default function LotteryResults({ numbers, data }: TLotteryResultsProps) {
   const pozoExtra = [
@@ -18,25 +14,17 @@ export default function LotteryResults({ numbers, data }: TLotteryResultsProps) 
     ),
   ].sort((a, b) => a - b);
 
-  const dataWithPozoExtra = {
+  const dataWithPozoExtra: { [key: string]: number[] } = {
     ...data,
     POZO_EXTRA: pozoExtra,
   };
 
-  const lotteryHits = data
+  const lotteryHits: TLotteryHits = data
     ? Object.keys(dataWithPozoExtra).reduce((acc, key) => {
-        const hits = dataWithPozoExtra[key]?.filter((num) => numbers.includes(num)).length || 0;
-        return { ...acc, [key]: hits };
-      }, {})
+      const hits = dataWithPozoExtra[key]?.filter((num) => numbers.includes(num)).length || 0;
+      return { ...acc, [key]: hits };
+    }, {})
     : {};
-
-  const minNecessaryLotteryHits = {
-    LA_SEGUNDA: 4,
-    TRADICIONAL: 4,
-    REVANCHA: 6,
-    SIEMPRE_SALE: 5,
-    POZO_EXTRA: 6,
-  };
 
   return (
     <View style={[globalStyles.container, globalStyles.bg, styles.wrapper]}>
@@ -49,55 +37,21 @@ export default function LotteryResults({ numbers, data }: TLotteryResultsProps) 
       )}
       <View style={[globalStyles.container, styles.container]}>
         {dataWithPozoExtra &&
-          Object.keys(dataWithPozoExtra).map((key) => {
-            const ThereAreLotteryHits = lotteryHits[key] >= minNecessaryLotteryHits[key];
-
-            return (
-              <View style={styles.resultList}>
-                <View style={styles.wrapperTitle}>
-                  <Text key={key} style={[globalStyles.text, styles.boldText]}>
-                    {key.replace('_', ' ')}
-                  </Text>
-                  <View style={[ThereAreLotteryHits ? globalStyles.tagSuccess : globalStyles.tagError, styles.tag]}>
-                    <Text>{ThereAreLotteryHits ? 'Con premio' : 'Sin premio'}</Text>
-                  </View>
-                </View>
-                <View style={styles.wrapperResult}>
-                  {dataWithPozoExtra[key].map((num: number) => {
-                    const number = num < 10 ? `0${num}` : num;
-                    if (numbers.includes(num)) {
-                      return (
-                        <Text key={num} style={[globalStyles.text, styles.sameNumber]}>
-                          {number}
-                        </Text>
-                      );
-                    }
-                    return (
-                      <Text key={num} style={[globalStyles.text, { padding: 4, marginHorizontal: 4 }]}>
-                        {number}
-                      </Text>
-                    );
-                  })}
-                </View>
-              </View>
-            );
-          })}
+          Object.keys(dataWithPozoExtra).map((key) => (
+            <LotteryResultCard
+              dataWithPozoExtra={dataWithPozoExtra}
+              name={key}
+              key={key}
+              numbers={numbers}
+              lotteryHits={lotteryHits[key]}
+            />
+          ))}
       </View>
       <View style={styles.wrapperBtn}>
-        <Link
-          href={{
-            pathname: '/',
-          }}
-          style={[globalStyles.buttonSecondary, styles.button]}
-        >
+        <Link href={ROUTES.HOME} style={[globalStyles.buttonSecondary, styles.button]}>
           <Text style={globalStyles.label}>Inicio</Text>
         </Link>
-        <Link
-          href={{
-            pathname: '/photo',
-          }}
-          style={[globalStyles.button, styles.button]}
-        >
+        <Link href={ROUTES.PHOTO} style={[globalStyles.button, styles.button]}>
           <Text style={globalStyles.label}>Volver</Text>
         </Link>
       </View>
@@ -113,15 +67,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 0,
   },
-  resultList: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 8,
-    paddingVertical: 8,
-    borderRadius: 50,
-    backgroundColor: '#f5f5f5',
-  },
   numbersContainer: {
     width: '100%',
     alignItems: 'center',
@@ -132,32 +77,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     borderRadius: 50,
     backgroundColor: '#a8debf',
-  },
-  wrapperTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    width: '100%',
-  },
-  boldText: {
-    fontWeight: 'bold',
-    marginBottom: 0,
-    marginRight: 8,
-  },
-  wrapperResult: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 8,
-    flexWrap: 'wrap',
-  },
-  sameNumber: {
-    backgroundColor: '#a8debf',
-    padding: 4,
-    borderRadius: 50,
-    fontWeight: 'bold',
-    marginHorizontal: 4,
   },
   tag: {
     position: 'absolute',

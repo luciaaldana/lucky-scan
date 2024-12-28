@@ -2,6 +2,7 @@
 import { StyleSheet, Text, View, Image, Dimensions, Pressable } from 'react-native';
 import globalStyles from '../styles/global';
 import { Link } from 'expo-router';
+import { ROUTES } from '@/constants';
 
 interface ILotteryTicket {
   image: string;
@@ -34,7 +35,7 @@ export default function DataConfirmation({ setLotteryTicket, lotteryTicket }: ID
         </Pressable>
         <Link
           href={{
-            pathname: '/results',
+            pathname: ROUTES.RESULTS,
             params: { numbers: JSON.stringify(lotteryTicket.numbers) },
           }}
           style={[globalStyles.button, styles.button]}

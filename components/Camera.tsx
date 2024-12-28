@@ -1,15 +1,19 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Link } from 'expo-router';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import globalStyles from '../styles/global';
 import { useProcessPhoto } from '@/hooks/useProcessPhoto';
 import { useRenderState } from '@/hooks/useRenderState';
-import { Link } from 'expo-router';
+import { Guide } from './Guide';
+import { ROUTES } from '@/constants';
+import { ICamera } from '@/types';
+import globalStyles from '../styles/global';
 
-export default function Camera({ lotteryTicket, setLotteryTicket }: any) {
+export default function Camera({ lotteryTicket, setLotteryTicket }: ICamera) {
   const [permission, requestPermission] = useCameraPermissions();
   const { processPhoto, loading, error, setError } = useProcessPhoto(setLotteryTicket);
   const cameraRef = useRef<CameraView>(null);
+  const [errorTakePhoto, setErrorTakePhoto] = useState('');
 
   const takePicture = async () => {
     if (!cameraRef.current) {
@@ -23,22 +27,26 @@ export default function Camera({ lotteryTicket, setLotteryTicket }: any) {
         await processPhoto(photo.uri);
       }
     } catch (err) {
-      console.error(err);
+      setErrorTakePhoto('Ocurrió un error al tomar la foto. Intenta nuevamente.');
+      throw new Error(`Error al tomar la foto: ${err}`);
     }
   };
 
   const handleResetLotteryTicket = () => {
     setError(null);
+    setErrorTakePhoto('');
   };
 
-  const content = useRenderState(loading, error, lotteryTicket, {
+  const cameraError = error || errorTakePhoto;
+
+  const content = useRenderState(loading, cameraError, lotteryTicket, {
     error: (
       <View style={styles.container}>
-        <Text style={globalStyles.text}>{error}</Text>
+        <Text style={globalStyles.text}>{error ? error : errorTakePhoto}</Text>
         <View style={styles.wrapperBtn}>
           <Link
             href={{
-              pathname: '/',
+              pathname: ROUTES.HOME,
               params: { numbers: JSON.stringify(lotteryTicket.numbers) },
             }}
             style={[globalStyles.buttonSecondary, styles.button]}
@@ -53,18 +61,7 @@ export default function Camera({ lotteryTicket, setLotteryTicket }: any) {
     ),
     success: (
       <View style={[globalStyles.container, { paddingTop: 0 }]}>
-        <View style={styles.containerSteps}>
-          <Text style={globalStyles.text}>
-            Controla la fecha de tu boleta y que corresponda a la fecha de sorteo. Quini6 sortea cada Miércoles y
-            Domingo a las 21 horas.
-          </Text>
-          <View style={styles.stepTwo}>
-            <Image source={require('../assets/guide.png')} style={styles.image} />
-            <Text style={[globalStyles.text, { flex: 1 }]}>
-              Usa la cámara horizontal para enfocar la fila de números de tu boleta.
-            </Text>
-          </View>
-        </View>
+        <Guide />
         <View style={[globalStyles.container, { padding: 0 }]}>
           <View style={styles.containerCamera}>
             <CameraView style={styles.camera} facing={'back'} ref={cameraRef} autofocus="on" />
@@ -101,15 +98,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  containerSteps: {
-    marginBottom: 16,
-  },
-  stepTwo: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginVertical: 8,
-  },
   message: {
     textAlign: 'center',
     paddingBottom: 10,
@@ -124,12 +112,6 @@ const styles = StyleSheet.create({
     height: 250,
     width: 300,
     alignSelf: 'center',
-  },
-  image: {
-    width: Dimensions.get('window').width * 0.4,
-    height: Dimensions.get('window').width * 0.4,
-    objectFit: 'contain',
-    marginRight: 16,
   },
   wrapperBtn: {
     width: '100%',

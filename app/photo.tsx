@@ -1,12 +1,13 @@
-import Camera from '@/components/Camera';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import globalStyles from '../styles/global';
+import Camera from '@/components/Camera';
 import DataConfirmation from '@/components/DataConfirmation';
+import { TLotteryTicket } from '@/types';
+import globalStyles from '../styles/global';
 
 export default function Photo() {
-  const [lotteryTicket, setLotteryTicket] = useState<{ image: string; numbers: number[] }>({ image: '', numbers: [] });
+  const [lotteryTicket, setLotteryTicket] = useState<TLotteryTicket>({ image: '', numbers: [] });
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#e0f3e8' }}>

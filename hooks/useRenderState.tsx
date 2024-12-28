@@ -1,8 +1,7 @@
 import Spinner from '@/components/Spinner';
+import { ERenderState } from '@/types';
 import React from 'react';
 import { Text } from 'react-native';
-
-type RenderState = 'loading' | 'error' | 'success';
 
 type ComponentsMap = {
   loading: JSX.Element;
@@ -25,9 +24,9 @@ export const useRenderState = (
 
   const components = { ...defaultComponents, ...customComponents };
 
-  const currentState: RenderState = loading ? 'loading' : error ? 'error' : 'success';
+  const currentState: ERenderState = loading ? ERenderState.Loading : error ? ERenderState.Error : ERenderState.Success;
 
-  if (currentState === 'success' && typeof components.success === 'function') {
+  if (currentState === ERenderState.Success && typeof components.success === 'function') {
     const SuccessComponent = components.success;
     return <SuccessComponent data={data} {...props} />;
   }

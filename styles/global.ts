@@ -52,16 +52,31 @@ export default StyleSheet.create({
     borderColor: '#020202',
     borderWidth: 2,
   },
-  tagError: {
+  tag: {
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 50,
+  },
+  tagError: {
     backgroundColor: '#f0aaaa',
   },
   tagSuccess: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 50,
     backgroundColor: '#a8debf',
+  },
+  matchedBall: {
+    backgroundColor: '#a8debf',
+    padding: 4,
+    borderRadius: 50,
+    fontWeight: 'bold',
+    marginHorizontal: 4,
+  },
+  card: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 8,
+    paddingVertical: 8,
+    borderRadius: 50,
+    backgroundColor: '#f5f5f5',
   },
 });
