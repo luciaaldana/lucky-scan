@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { StyleSheet, Text, View, Image, Dimensions, Pressable } from 'react-native';
-import globalStyles from '../styles/global';
 import { Link } from 'expo-router';
 import { ROUTES } from '@/constants';
+import globalStyles from '../styles/global';
 
 interface ILotteryTicket {
   image: string;

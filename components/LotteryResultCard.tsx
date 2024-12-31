@@ -19,8 +19,11 @@ const LotteryResultCard = ({ lotteryHits, name, numbers, dataWithPozoExtra }: IR
         </View>
       </View>
       <View style={styles.wrapperResult}>
-        {dataWithPozoExtra[name].map((num: number) => (
-          <Text key={`${name}-${num}`} style={[globalStyles.text, numbers.includes(num) && globalStyles.matchedBall]}>
+        {dataWithPozoExtra[name].map((num: number, index: number) => (
+          <Text
+            key={`${name}-${num}`}
+            style={[globalStyles.text, numbers.includes(num) && globalStyles.matchedBall, styles.number]}
+          >
             {num < 10 ? `0${num}` : num}
           </Text>
         ))}
@@ -44,11 +47,15 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginRight: 8,
   },
+  number: {
+    margin: 4,
+  },
   wrapperResult: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 8,
+    paddingHorizontal: 32,
     flexWrap: 'wrap',
   },
   tag: {

@@ -1,7 +1,7 @@
-import Spinner from '@/components/Spinner';
-import { ERenderState } from '@/types';
 import React from 'react';
 import { Text } from 'react-native';
+import Spinner from '@/components/Spinner';
+import { ERenderState } from '@/types';
 
 type ComponentsMap = {
   loading: JSX.Element;
