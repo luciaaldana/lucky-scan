@@ -56,7 +56,7 @@ Esta aplicación fue desarrollada para solucionar el tedioso proceso de verifica
 - Backend:
 
   - Debes tener un backend funcional que realice scraping y extracción de texto desde imágenes.
-  - El backend para este proyecto fue desarrollado en Python y utiliza fastApi, BeautifulSoup, pytesseract y cv2 (Pronto dejaré aquí la URL del repositorio).
+  - El backend para este proyecto fue desarrollado en Python y utiliza fastApi, BeautifulSoup, pytesseract y cv2. Puedes ver encontrar el repositorio del [backend aqui](https://github.com/luciaaldana/data-extractor).
 
 - Dependencias del Proyecto:
   - Node.js y npm.
