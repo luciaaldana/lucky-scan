@@ -2,7 +2,7 @@
 
 ## Descripción
 
-`Lucky Sacan` es una aplicación desarrollada en React Native con Expo, que simplifica el proceso de verificación de resultados de la lotería Quini6. Esta app permite a los usuarios:
+`Lucky Scan` es una aplicación desarrollada en React Native con Expo, que simplifica el proceso de verificación de resultados de la lotería Quini6. Esta app permite a los usuarios:
 
 - Leer los números de tu ticket: Extrae los números de tu ticket a partir de una foto tomada desde la app.
 - Consultar los resultados del sorteo: Obtiene los números ganadores de la lotería haciendo scraping a la web oficial.
