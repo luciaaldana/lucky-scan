@@ -1,4 +1,4 @@
-# Lucky Sacan
+# Lucky Scan
 
 ## Descripción
 
@@ -32,7 +32,7 @@ Esta aplicación fue desarrollada para solucionar el tedioso proceso de verifica
 
 ## Características Principales
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 1. `Extracción de Números desde Foto`:
 
@@ -51,7 +51,7 @@ Esta aplicación fue desarrollada para solucionar el tedioso proceso de verifica
 
 ## Requisitos Previos
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 - Backend:
 
@@ -66,7 +66,7 @@ Esta aplicación fue desarrollada para solucionar el tedioso proceso de verifica
 
 ## Configuración Local
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 Sigue estos pasos para ejecutar la app en tu entorno local:
 
@@ -127,7 +127,7 @@ Esto abrirá una ventana en tu navegador con un código QR. Escanea este código
 
 ## Estructura del Proyecto
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 ### Frontend (React Native Expo)
 
@@ -149,7 +149,7 @@ Esto abrirá una ventana en tu navegador con un código QR. Escanea este código
 
 ## Tecnologías Utilizadas
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 - Frontend:
 
@@ -170,7 +170,7 @@ Esto abrirá una ventana en tu navegador con un código QR. Escanea este código
 
 ## Custom Hook useRenderState
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 El custom hook `useRenderState` de la app es un hook personalizado diseñado para manejar de manera eficiente los estados de carga (loading), error y éxito en una aplicación React Native. Es especialmente útil para componentes que dependen de datos asincrónicos o que deben mostrar diferentes vistas según el estado actual.
 
@@ -239,7 +239,7 @@ El custom hook `useRenderState` de la app es un hook personalizado diseñado par
 
 ## Fetch en lugar de axios
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 En este proyecto, se utiliza fetch en lugar de axios por las siguientes razones:
 
@@ -248,7 +248,7 @@ En este proyecto, se utiliza fetch en lugar de axios por las siguientes razones:
 
 ## Futuras Funcionalidades
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 Estas son algunas características planificadas para futuras versiones de la app:
 
@@ -266,12 +266,12 @@ Si tienes ideas o sugerencias, no dudes en abrir un issue o contribuir al proyec
 
 ## Contribuciones
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 Si deseas contribuir al proyecto, por favor abre un pull request o crea un issue para discutir los cambios. Igualmente si tienes competarios para mejorar la app, estoy abierta a sugerencias. ¡Gracias por tu interés!
 
 ## Licencia
 
-[Volver arriba](#)
+[Volver arriba](#lucky-scan)
 
 Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](./LICENSE) para más detalles.
