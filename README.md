@@ -8,7 +8,7 @@
 - Consultar los resultados del sorteo: Obtiene los números ganadores de la lotería haciendo scraping a la web oficial.
 - Validar aciertos: Compara los números de tu ticket con los resultados del sorteo y te indica si tienes premios.
 
-Esta aplicación fue desarrollada para solucionar el tedioso proceso de verificar manualmente los resultados en la web oficial desde dispositivos iOS, eliminando la necesidad de ingresar números en múltiples inputs y teclados.
+Esta aplicación fue desarrollada para solucionar el tedioso proceso de verificar manualmente los resultados en la web oficial desde dispositivos móviles, eliminando la necesidad de ingresar números en múltiples inputs y teclados.
 
 ![](./assets/steps.png)
 
@@ -73,8 +73,8 @@ Sigue estos pasos para ejecutar la app en tu entorno local:
 1. Clonar el Repositorio. Clona este repositorio en tu máquina local:
 
 ```bash
-git clone <REPOSITORIO_URL>
-cd <NOMBRE_DEL_REPOSITORIO>
+git clone https://github.com/luciaaldana/lucky-scan.git
+cd lucky-scan
 ```
 
 2. Instalar Dependencias. Ejecuta el siguiente comando para instalar todas las dependencias necesarias:
@@ -86,24 +86,14 @@ npm install
 3. Configurar Variables de Entorno. Crea un archivo .env en la raíz del proyecto y define las siguientes variables de entorno:
 
 ```env
-EXPO_PUBLIC_API_URL=http://<URL_DEL_BACKEND_LOCAL>:<PUERTO>
-EXPO_PUBLIC_SCRAPE_URL=https://<URL_DE_LA_LOTERIA>
+EXPO_PUBLIC_API_URL=<URL_DEL_BACKEND_LOCAL>
+EXPO_PUBLIC_SCRAPE_URL=<URL_DE_LA_LOTERIA>
 ```
 
 - EXPO_PUBLIC_API_URL: URL donde está corriendo el backend.
 - EXPO_PUBLIC_SCRAPE_URL: URL de la web de la lotería para scraping.
 
-4. Ejecutar el Backend. Antes de ejecutar la app, asegúrate de que el backend esté corriendo. Dependiendo de cómo hayas configurado tu backend, puedes iniciar el servidor localmente, por ejemplo:
-
-```bash
-docker-compose up --build
-# o
-npm run start
-```
-
-Confirma que el backend está activo y accesible desde la URL definida en EXPO_PUBLIC_API_URL.
-
-5. Ejecutar la App
+4. Ejecutar la App
 
 - Inicia el entorno de desarrollo de Expo:
 
@@ -113,7 +103,7 @@ npx expo start
 
 Esto abrirá una ventana en tu navegador con un código QR. Escanea este código usando Expo Go en tu dispositivo móvil o utiliza un emulador de iOS/Android conectado.
 
-6. Prueba las Funcionalidades
+5. Prueba las Funcionalidades
 
    1. Extracción de Números desde Foto:
 
